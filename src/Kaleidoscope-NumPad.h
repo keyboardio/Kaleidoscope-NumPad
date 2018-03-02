@@ -11,6 +11,23 @@ class NumPad_ : public KaleidoscopePlugin {
   void begin(void) final;
 
   static uint8_t numPadLayer;
+  static cRGB numpad_color;
+
+ private:
+  static void loopHook(const bool postClear);
+
+  static byte row, col;
+  static bool cleanupDone;
+};
+
+class FuncPad_ : public KaleidoscopePlugin {
+ public:
+  FuncPad_(void) {}
+
+  void begin(void) final;
+
+  static uint8_t FuncPadLayer;
+  static cRGB Funcpad_color;
 
  private:
   static void loopHook(const bool postClear);
@@ -20,3 +37,5 @@ class NumPad_ : public KaleidoscopePlugin {
 };
 
 extern NumPad_ NumPad;
+extern FuncPad_ FuncPad;
+
