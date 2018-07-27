@@ -3,10 +3,12 @@
 #include "Kaleidoscope.h"
 #include "layers.h"
 
-byte NumPad_::row = 255, NumPad_::col = 255;
+byte NumPad_::lock_row = 255, NumPad_::lock_col = 255;
 uint8_t NumPad_::numPadLayer;
 bool NumPad_::cleanupDone = true;
 bool NumPad_::originalNumLockState = false;
+
+bool NumPad_::ledEffect = true;
 cRGB NumPad_::color = CRGB(160, 0, 0);
 uint8_t NumPad_::lock_hue = 170;
 
@@ -43,6 +45,9 @@ kaleidoscope::EventHandlerResult NumPad_::afterEachCycle() {
   cleanupDone = false;
   syncNumlock(true);
 
+  if (!ledEffect)
+    return kaleidoscope::EventHandlerResult::OK;
+
   LEDControl.set_mode(LEDControl.get_mode_index());
 
   for (uint8_t r = 0; r < ROWS; r++) {
@@ -51,8 +56,8 @@ kaleidoscope::EventHandlerResult NumPad_::afterEachCycle() {
       Key layer_key = Layer.getKey(numPadLayer, r, c);
 
       if (k == LockLayer(numPadLayer)) {
-        row  = r;
-        col = c;
+        lock_row = r;
+        lock_col = c;
       }
 
       if ((k != layer_key) || (k == Key_NoKey) || (k.flags != KEY_FLAGS)) {
@@ -63,11 +68,11 @@ kaleidoscope::EventHandlerResult NumPad_::afterEachCycle() {
     }
   }
 
-  if (row > ROWS || col > COLS)
+  if (lock_row > ROWS || lock_col > COLS)
     return kaleidoscope::EventHandlerResult::OK;
 
   cRGB lock_color = breath_compute(lock_hue);
-  LEDControl.setCrgbAt(row, col, lock_color);
+  LEDControl.setCrgbAt(lock_row, lock_col, lock_color);
 
   return kaleidoscope::EventHandlerResult::OK;
 }
