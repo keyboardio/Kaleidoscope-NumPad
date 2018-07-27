@@ -58,7 +58,7 @@ kaleidoscope::EventHandlerResult NumPad_::afterEachCycle() {
         col = c;
       }
 
-      if ((k != layer_key) || (k == Key_NoKey) || (k.flags != KEY_FLAGS)) {
+      if ((k != layer_key) || (k == Key_NoKey)) {
         LEDControl.refreshAt(r, c);
       } else {
         LEDControl.setCrgbAt(r, c, color);
