@@ -19,6 +19,7 @@ class NumPad_ : public kaleidoscope::Plugin {
   static byte row, col;
   static bool cleanupDone;
   static bool originalNumLockState;
+  static uint16_t last_update;
 };
 
 extern NumPad_ NumPad;
